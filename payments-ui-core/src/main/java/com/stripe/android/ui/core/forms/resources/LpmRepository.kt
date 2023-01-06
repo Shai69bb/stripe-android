@@ -343,7 +343,7 @@ class LpmRepository constructor(
             )
             PaymentMethod.Type.PayPal.code -> SupportedPaymentMethod(
                 "paypal",
-                false,
+                true,
                 R.string.stripe_paymentsheet_payment_method_paypal,
                 R.drawable.stripe_ic_paymentsheet_pm_paypal,
                 sharedDataSpec.selectorIcon?.lightThemePng,
