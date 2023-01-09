@@ -1185,40 +1185,31 @@ internal class PaymentSheetActivityTest {
     fun `Verify if customer has payment methods, display the saved payment methods screen`() {
         val viewModel = createViewModel(paymentMethods = PAYMENT_METHODS)
 
-        val transitionTargets = mutableListOf<TransitionTarget>()
-        viewModel.transition.observeEventsForever { transitionTargets.add(it) }
-
         activityScenario(viewModel).launch(intent).use {
             it.onActivity {
                 idleLooper()
             }
         }
 
-        assertThat(transitionTargets).containsExactly(TransitionTarget.SelectSavedPaymentMethods)
+        assertThat(viewModel.backStack.value).containsExactly(TransitionTarget.SelectSavedPaymentMethods)
     }
 
     @Test
     fun `Verify if there are no payment methods, display the add payment method screen`() {
         val viewModel = createViewModel(paymentMethods = emptyList())
 
-        val transitionTargets = mutableListOf<TransitionTarget>()
-        viewModel.transition.observeEventsForever { transitionTargets.add(it) }
-
         activityScenario(viewModel).launch(intent).use {
             it.onActivity {
                 idleLooper()
             }
         }
 
-        assertThat(transitionTargets).containsExactly(TransitionTarget.AddFirstPaymentMethod)
+        assertThat(viewModel.backStack.value).containsExactly(TransitionTarget.AddFirstPaymentMethod)
     }
 
     @Test
     fun `Verify doesn't transition to first screen again on activity recreation`() {
         val viewModel = createViewModel(paymentMethods = emptyList())
-
-        val transitionTargets = mutableListOf<TransitionTarget>()
-        viewModel.transition.observeEventsForever { transitionTargets.add(it) }
 
         activityScenario(viewModel).launch(intent).use {
             it.onActivity {
@@ -1232,7 +1223,7 @@ internal class PaymentSheetActivityTest {
             }
         }
 
-        assertThat(transitionTargets).containsExactly(TransitionTarget.AddFirstPaymentMethod)
+        assertThat(viewModel.backStack.value).containsExactly(TransitionTarget.AddFirstPaymentMethod)
     }
 
     private fun currentFragment(activity: PaymentSheetActivity) =
